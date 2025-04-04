@@ -1,0 +1,1 @@
+export const API_ENDPOINT='https://shell-poc-dthzdfg8d5f3b9as.canadacentral-01.azurewebsites.net/salestrends'
