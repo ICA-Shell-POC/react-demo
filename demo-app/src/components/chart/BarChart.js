@@ -41,7 +41,10 @@ const BarChart = ({ data }) => {
   };
   
 
-  return <Bar data={chartData} options={options} />;
+  return(
+  <div style={{ width: '100%'}}>
+    <Bar data={chartData} options={options} />
+  </div>)
 };
 
 export default BarChart;

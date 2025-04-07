@@ -1,70 +1,91 @@
 import React from 'react';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-import { Bar, Line } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
+import {
+    Chart as ChartJS,
+    LineElement,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    Legend,
+    Tooltip,
+} from 'chart.js';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, Title, Tooltip, Legend);
+// Register Chart.js components
+ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Legend, Tooltip);
 
-const data = {
-  labels: ['Station 1', 'Station 2'],
-  datasets: [
-    {
-      type: 'bar',
-      label: 'Total Fuel Sold',
-      data: [3750, 1950],
-      backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(153, 102, 255, 0.6)'],
-    },
-    {
-      type: 'line',
-      label: 'Peak Hour Start',
-      data: [7.5, 9], // Converted to hours
-      borderColor: 'rgba(255, 99, 132, 1)',
-      backgroundColor: 'rgba(255, 99, 132, 0.2)',
-      yAxisID: 'y-axis-2',
-    },
-    {
-      type: 'line',
-      label: 'Peak Hour End',
-      data: [18.5, 19], // Converted to hours
-      borderColor: 'rgba(54, 162, 235, 1)',
-      backgroundColor: 'rgba(54, 162, 235, 0.2)',
-      yAxisID: 'y-axis-2',
-    },
-  ],
-};
+const PeakHoursAndSalesChart = ({data}) => {
+   
+    if (!data) {
+        return <div>No Peak Hour Data Available</div>;
+    }
 
-const options = {
-  scales: {
-    x: {
-      title: {
-        display: true,
-        text: 'Stations',
-      },
-    },
-    y: {
-      title: {
-        display: true,
-        text: 'Total Fuel Sold',
-      },
-    },
-    'y-axis-2': {
-      position: 'right',
-      title: {
-        display: true,
-        text: 'Peak Hours (in hours)',
-      },
-      min: 0,
-      max: 24,
-    },
-  },
-};
+    // Preprocess the data to extract hours and minutes from peakHourStart
+    const stations = [...new Set(data.map((item) => item.stationID))]; // Get unique station IDs
+    const processedData = stations.map((stationID) => {
+        const stationData = data.filter((item) => item.stationID === stationID);
+        return {
+            station: `Station ${stationID}`,
+            data: stationData.map((item) => ({
+                hour: new Date(`${item.saleDateTime}`).getHours() +
+                      new Date(`${item.saleDateTime}`).getMinutes() / 60,
+                sales: item.fuelSold,
+            })),
+        };
+    });
 
-const PeakHoursAndSalesChart = () => {
-  return (
-    <div>
-      <h2>Peak Hours and Sales</h2>
-      <Bar data={data} options={options} />
-    </div>
-  );
+    // Prepare data for Chart.js
+    const chartData = {
+        labels: Array.from({ length: 25 }, (_, i) => i), // X-axis labels (0-24 hours)
+        datasets: processedData.map((station, index) => ({
+            label: station.station,
+            data: station.data.map((item) => ({
+                x: item.hour,
+                y: item.sales,
+            })),
+            borderColor: `hsl(${(index * 360) / stations.length}, 70%, 50%)`, // Unique color for each station
+            backgroundColor: `hsl(${(index * 360) / stations.length}, 70%, 70%)`,
+            tension: 0.4, // Smooth curve
+            fill: false,
+        })),
+    };
+
+    const chartOptions = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            tooltip: {
+                callbacks: {
+                    label: (context) => `Sales: ${context.raw.y}`,
+                },
+            },
+        },
+        scales: {
+            x: {
+                type: 'linear',
+                position: 'bottom',
+                title: {
+                    display: true,
+                    text: 'Sales time in Hours (0-24)',
+                },
+                min: 0,
+                max: 24,
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Sales',
+                },
+            },
+        },
+    };
+
+    return (
+        <div style={{ width: '100%' }}>
+            <Line data={chartData} options={chartOptions} />
+        </div>
+    );
 };
 
 export default PeakHoursAndSalesChart;

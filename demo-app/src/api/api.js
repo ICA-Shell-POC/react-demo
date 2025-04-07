@@ -1,9 +1,9 @@
 // src/api.js
 import { API_ENDPOINT } from "../constants/constant";
 // src/api.js// src/api.js
-export const fetchData = async () => {
+export const fetchData = async (url) => {
     try {
-        const response = await fetch(API_ENDPOINT);
+        const response = await fetch(API_ENDPOINT + url);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
