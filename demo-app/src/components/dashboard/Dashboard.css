@@ -44,10 +44,12 @@
     min-height: 70px;
 }
 
+/* Align the refresh message to the right */
 .refresh-message {
-    color: #333; /* Dark grey for better readability */
-    font-size: 18px; /* Increased font size */
-    font-weight: 500; /* Slightly bold text for emphasis */
-    text-align: center;
-    margin: 0; /* Remove default margins */
+    text-align: right; /* Align text to the right */
+    width: 100%; /* Ensure it spans the full width of the container */
+    margin-bottom: 8px; /* Add some space below the message */
+    font-size: 14px;
+    font-weight: bold;
+    color: #333; /* Darker text color for better readability */
 }

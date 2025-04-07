@@ -16,8 +16,7 @@ const Dashboard = () => {
             const result = await fetchData('salestrends');
             setData(result);
             const now = new Date();
-            setRefreshMessage("Data refreshed "+ now.toLocaleString());
-            setTimeout(() => setRefreshMessage(""), 5000);
+            setRefreshMessage("Last refreshed at: "+ now.toLocaleString());
         };
         const getFuelData = async () => {
             const result = await fetchData('fuelsales');
@@ -51,22 +50,16 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard-container">
-            <div className='refresh-container'>
-                {refreshMessage && (
-                <h3 className="refresh-message">
-                    {refreshMessage}
-                </h3>
-                )}
-            </div>
-
             <div className="chart-grid">
                 <div className='chart-section'>
+                    <h5 style={{ color: 'black' }} className='refresh-message'>{refreshMessage}</h5>
                     <h2 style={{ color: 'black' }}>Sales Data</h2>
-                    <BarChart data={data} />
+                    <BarChart data={data} refreshed={refreshMessage}/>
                 </div>
                 <div className='chart-section'>
+                    <h5 style={{ color: 'black' }} className='refresh-message'>{refreshMessage}</h5>
                     <h2 style={{ color: 'black' }}>Sales trend per station</h2>
-                    <PeakHoursAndSalesChart data={fuelData}/>
+                    <PeakHoursAndSalesChart data={fuelData} refreshed={refreshMessage}/>
                 </div>
             </div>
         </div>
