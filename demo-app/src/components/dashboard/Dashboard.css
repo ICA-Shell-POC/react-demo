@@ -39,3 +39,15 @@
     font-weight: bold;
     color: #333; /* Darker text color for better readability */
 }
+
+.refresh-container {
+    min-height: 70px;
+}
+
+.refresh-message {
+    color: #333; /* Dark grey for better readability */
+    font-size: 18px; /* Increased font size */
+    font-weight: 500; /* Slightly bold text for emphasis */
+    text-align: center;
+    margin: 0; /* Remove default margins */
+}
