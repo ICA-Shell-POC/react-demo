@@ -26,9 +26,10 @@ const PeakHoursAndSalesChart = ({data}) => {
         return {
             station: `Station ${stationID}`,
             data: stationData.map((item) => ({
-                hour: new Date(`${item.saleDateTime}`).getHours() +
-                      new Date(`${item.saleDateTime}`).getMinutes() / 60,
-                sales: item.fuelSold,
+                // hour: new Date(`${item.saleDateTime}`).getHours() +
+                //       new Date(`${item.saleDateTime}`).getMinutes() / 60,
+                hour: item.saleHour, // Assuming Sale Hour is in hours
+                sales: item.totalSales,
             })),
         };
     });
