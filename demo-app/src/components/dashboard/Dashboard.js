@@ -53,7 +53,7 @@ const Dashboard = () => {
             <div className="chart-grid">
                 <div className='chart-section'>
                     <h5 style={{ color: 'black' }} className='refresh-message'>{refreshMessage}</h5>
-                    <h2 style={{ color: 'black' }}>Sales Data</h2>
+                    <h2 style={{ color: 'black' }}>Peak Hour Sales Data</h2>
                     <BarChart data={data} refreshed={refreshMessage}/>
                 </div>
                 <div className='chart-section'>
