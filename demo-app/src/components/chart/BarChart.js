@@ -27,6 +27,10 @@ const BarChart = ({ data }) => {
             stepSize: 0.5,
             max: 24,
           },
+          title: {
+            display: true,
+            text: 'In Gallons',
+        },
       },
     },
     tooltips: {

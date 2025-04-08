@@ -76,7 +76,7 @@ const PeakHoursAndSalesChart = ({data}) => {
             y: {
                 title: {
                     display: true,
-                    text: 'Sales',
+                    text: 'No.Of.Orders',
                 },
             },
         },
